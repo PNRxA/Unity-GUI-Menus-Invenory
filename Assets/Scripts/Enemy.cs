@@ -7,6 +7,7 @@ public class Enemy : MonoBehaviour
 
     public int health = 100;
     public Animator hurt;
+    public Inventory inventory;
 
     // Use this for initialization
     void Start()
@@ -25,6 +26,12 @@ public class Enemy : MonoBehaviour
         if (col.collider.tag == "Weapon")
         {
             hurt.SetTrigger("Hurt");
+            DropItem();
         }
+    }
+
+    void DropItem()
+    {
+        inventory.inv.Add(ItemDatabase.createItem(000));
     }
 }

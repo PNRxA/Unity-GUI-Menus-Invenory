@@ -8,48 +8,16 @@ public class Inventory : MonoBehaviour
     public bool showInv;
     public Item selectedItem;
     public GameManager gm;
+    public Vector2 invScrollPosition = Vector2.zero;
 
     private int _selectedIndex; // for drag and drop stuff later
+    private float scrW;
+    private float scrH;
 
     void Start()
     {
         inv.Add(ItemDatabase.createItem(000));
         inv.Add(ItemDatabase.createItem(300));
-        inv.Add(ItemDatabase.createItem(400));
-        inv.Add(ItemDatabase.createItem(400));
-        inv.Add(ItemDatabase.createItem(400));
-        inv.Add(ItemDatabase.createItem(400));
-        inv.Add(ItemDatabase.createItem(400));
-        inv.Add(ItemDatabase.createItem(400));
-        inv.Add(ItemDatabase.createItem(400));
-        inv.Add(ItemDatabase.createItem(400));
-        inv.Add(ItemDatabase.createItem(400));
-        inv.Add(ItemDatabase.createItem(400));
-        inv.Add(ItemDatabase.createItem(400));
-        inv.Add(ItemDatabase.createItem(400));
-        inv.Add(ItemDatabase.createItem(400));
-        inv.Add(ItemDatabase.createItem(400));
-        inv.Add(ItemDatabase.createItem(400));
-        inv.Add(ItemDatabase.createItem(400));
-        inv.Add(ItemDatabase.createItem(400));
-        inv.Add(ItemDatabase.createItem(400));
-        inv.Add(ItemDatabase.createItem(400));
-        inv.Add(ItemDatabase.createItem(400));
-        inv.Add(ItemDatabase.createItem(400));
-        inv.Add(ItemDatabase.createItem(400));
-        inv.Add(ItemDatabase.createItem(400));
-        inv.Add(ItemDatabase.createItem(400));
-        inv.Add(ItemDatabase.createItem(400));
-        inv.Add(ItemDatabase.createItem(400));
-        inv.Add(ItemDatabase.createItem(400));
-        inv.Add(ItemDatabase.createItem(400));
-        inv.Add(ItemDatabase.createItem(400));
-        inv.Add(ItemDatabase.createItem(400));
-        inv.Add(ItemDatabase.createItem(400));
-        inv.Add(ItemDatabase.createItem(400));
-        inv.Add(ItemDatabase.createItem(400));
-        inv.Add(ItemDatabase.createItem(400));
-        inv.Add(ItemDatabase.createItem(400));
         inv.Add(ItemDatabase.createItem(400));
     }
 
@@ -83,18 +51,34 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    void ItemData(string name)
+    {
+        GUI.DrawTexture(new Rect(scrW * 12f, scrH, scrW * 2.5f, scrH * 2.5f), selectedItem.Icon);
+        GUI.Box(new Rect(scrW * 10.5f, 4 * scrH, scrW * 5, scrH * 4f), selectedItem.Name + "\n" + selectedItem.Description + "\nValue: " + selectedItem.Value + "\nHeal: " + selectedItem.Heal);
+        if (GUI.Button(new Rect(scrW * 11f, 6.5f * scrH, scrW * 4, scrH), name))
+        {
+
+        }
+    }
+
     void OnGUI()
     {
-        float scrW = Screen.width / 16;
-        float scrH = Screen.height / 10;
+        scrW = Screen.width / 16;
+        scrH = Screen.height / 10;
+
+        GUI.skin.box.wordWrap = true;
 
         if (showInv)
         {
             //full background
             GUI.Box(new Rect(0, 0, Screen.width, Screen.height), "");
             //background
-            GUI.Box(new Rect(scrW * 0.5f, scrH * 0.5f, scrW * 8, scrH * 8), "Inventory");
+            GUI.Box(new Rect(scrW * 0.5f, scrH * 0.5f, scrW * 8, scrH * 8), "");
+            //emphasised header
+            GUI.Box(new Rect(scrW * 0.5f, scrH * 0.5f, scrW * 8, scrH * 1), "Inventory");
             //for loop list
+            //TODO: Need to change the end inv.Count * scrH
+            invScrollPosition = GUI.BeginScrollView(new Rect(scrW * 0.5f, scrH * 1.5f, scrW * 8, scrH * 7), invScrollPosition, new Rect(scrW * 0.5f, scrH * 0.5f, scrW * 7, inv.Count * scrH + 50));
             for (int i = 0; i < inv.Count; i++)
             {
                 //old code
@@ -104,16 +88,22 @@ public class Inventory : MonoBehaviour
                 //}
 
                 //buttons for each inventory item
-                Rect r = new Rect(scrW, scrH + i * (scrH), scrW,  scrH);
+                Rect r = new Rect(scrW, scrH + i * (scrH), scrW, scrH);
+                Rect b = new Rect(scrW, scrH + i * (scrH), scrW * 6, scrH);
+                GUI.Box(b, inv[i].Name);
                 GUI.DrawTexture(r, inv[i].Icon);
                 if (Input.GetMouseButton(0))
                 {
-                    if (r.Contains(Event.current.mousePosition))
+                    if (b.Contains(Event.current.mousePosition))
                     {
                         selectedItem = inv[i];
                     }
                 }
-                
+                if (GUI.Button(new Rect(scrW * 7, scrH + i * (scrH), scrW, scrH), "Drop"))
+                {
+                    inv.Remove(inv[i]);
+                }
+
                 //alternateive code
                 //Rect position = new Rect(scrW, scrH + i * (scrH * 0.5f), 3 * scrW, 0.5f * scrH);
                 //GUI.DrawTexture(position, inv[i].Icon);
@@ -122,70 +112,37 @@ public class Inventory : MonoBehaviour
                 //    selectedItem = inv[i];
                 //}
             }
+            GUI.EndScrollView();
+
             if (selectedItem != null)
             {
                 if (selectedItem.Type == ItemType.Armour)
                 {
-                    GUI.DrawTexture(new Rect(scrW * 4.5f, scrH, scrW * 2.5f, scrH * 2.5f), selectedItem.Icon);
-                    GUI.Box(new Rect(scrW * 4.5f, 3 * scrH, scrW * 2.5f, scrH * 4f), selectedItem.Name + "\n" + selectedItem.Description + "\nValue: " + selectedItem.Value + "\nHeal: " + selectedItem.Heal);
-                    if (GUI.Button(new Rect(scrW * 5.75f, 7.5f * scrH, scrW * 1.25f, scrH * 0.5f), "Equip"))
-                    {
-
-                    }
+                    ItemData("Equip");
                 }
                 else if (selectedItem.Type == ItemType.Coins)
                 {
-                    GUI.DrawTexture(new Rect(scrW * 4.5f, scrH, scrW * 2.5f, scrH * 2.5f), selectedItem.Icon);
-                    GUI.Box(new Rect(scrW * 4.5f, 3 * scrH, scrW * 2.5f, scrH * 4f), selectedItem.Name + "\n" + selectedItem.Description + "\nValue: " + selectedItem.Value + "\nHeal: " + selectedItem.Heal);
-                    if (GUI.Button(new Rect(scrW * 5.75f, 7.5f * scrH, scrW * 1.25f, scrH * 0.5f), "Drop"))
-                    {
-
-                    }
+                    ItemData("Drop");
                 }
                 else if (selectedItem.Type == ItemType.Consumable)
                 {
-                    GUI.DrawTexture(new Rect(scrW * 4.5f, scrH, scrW * 2.5f, scrH * 2.5f), selectedItem.Icon);
-                    GUI.Box(new Rect(scrW * 4.5f, 3 * scrH, scrW * 2.5f, scrH * 4f), selectedItem.Name + "\n" + selectedItem.Description + "\nValue: " + selectedItem.Value + "\nHeal: " + selectedItem.Heal);
-                    if (GUI.Button(new Rect(scrW * 5.75f, 7.5f * scrH, scrW * 1.25f, scrH * 0.5f), "Eat"))
-                    {
-
-                    }
+                    ItemData("Eat");
                 }
                 else if (selectedItem.Type == ItemType.Craftable)
                 {
-                    GUI.DrawTexture(new Rect(scrW * 4.5f, scrH, scrW * 2.5f, scrH * 2.5f), selectedItem.Icon);
-                    GUI.Box(new Rect(scrW * 4.5f, 3 * scrH, scrW * 2.5f, scrH * 4f), selectedItem.Name + "\n" + selectedItem.Description + "\nValue: " + selectedItem.Value + "\nHeal: " + selectedItem.Heal);
-                    if (GUI.Button(new Rect(scrW * 5.75f, 7.5f * scrH, scrW * 1.25f, scrH * 0.5f), "Craft"))
-                    {
-
-                    }
+                    ItemData("Craft");
                 }
                 else if (selectedItem.Type == ItemType.Potion)
                 {
-                    GUI.DrawTexture(new Rect(scrW * 4.5f, scrH, scrW * 2.5f, scrH * 2.5f), selectedItem.Icon);
-                    GUI.Box(new Rect(scrW * 4.5f, 3 * scrH, scrW * 2.5f, scrH * 4f), selectedItem.Name + "\n" + selectedItem.Description + "\nValue: " + selectedItem.Value + "\nHeal: " + selectedItem.Heal);
-                    if (GUI.Button(new Rect(scrW * 5.75f, 7.5f * scrH, scrW * 1.25f, scrH * 0.5f), "Drink"))
-                    {
-
-                    }
+                    ItemData("Drink");
                 }
                 else if (selectedItem.Type == ItemType.Quest)
                 {
-                    GUI.DrawTexture(new Rect(scrW * 4.5f, scrH, scrW * 2.5f, scrH * 2.5f), selectedItem.Icon);
-                    GUI.Box(new Rect(scrW * 4.5f, 3 * scrH, scrW * 2.5f, scrH * 4f), selectedItem.Name + "\n" + selectedItem.Description + "\nValue: " + selectedItem.Value + "\nHeal: " + selectedItem.Heal);
-                    if (GUI.Button(new Rect(scrW * 5.75f, 7.5f * scrH, scrW * 1.25f, scrH * 0.5f), "Use"))
-                    {
-
-                    }
+                    ItemData("Use");
                 }
                 else if (selectedItem.Type == ItemType.Weapon)
                 {
-                    GUI.DrawTexture(new Rect(scrW * 4.5f, scrH, scrW * 2.5f, scrH * 2.5f), selectedItem.Icon);
-                    GUI.Box(new Rect(scrW * 4.5f, 3 * scrH, scrW * 2.5f, scrH * 4f), selectedItem.Name + "\n" + selectedItem.Description + "\nValue: " + selectedItem.Value + "\nHeal: " + selectedItem.Heal);
-                    if (GUI.Button(new Rect(scrW * 5.75f, 7.5f * scrH, scrW * 1.25f, scrH * 0.5f), "Equip"))
-                    {
-
-                    }
+                    ItemData("Equip");
                 }
             }
         }
