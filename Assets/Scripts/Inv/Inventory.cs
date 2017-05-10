@@ -10,7 +10,7 @@ public class Inventory : MonoBehaviour
     public GameManager gm;
     public Vector2 invScrollPosition = Vector2.zero;
 
-    private int _selectedIndex; // for drag and drop stuff later
+    private int _selectedIndex; // For drag and drop stuff later
     private float scrW;
     private float scrH;
 
@@ -27,25 +27,19 @@ public class Inventory : MonoBehaviour
         {
             gm.inMenu = true;
             showInv = true;
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
-            Time.timeScale = 0;
             return true;
         }
         else
         {
             gm.inMenu = false;
             showInv = false;
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
-            Time.timeScale = 1;
             return false;
         }
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (Input.GetKeyDown(KeyCode.Tab) && !gm.inPauseMenu)
         {
             ToggleInv();
         }
@@ -70,24 +64,24 @@ public class Inventory : MonoBehaviour
 
         if (showInv)
         {
-            //full background
+            // Full background
             GUI.Box(new Rect(0, 0, Screen.width, Screen.height), "");
-            //background
+            // Background
             GUI.Box(new Rect(scrW * 0.5f, scrH * 0.5f, scrW * 8, scrH * 8), "");
-            //emphasised header
+            // Emphasised header
             GUI.Box(new Rect(scrW * 0.5f, scrH * 0.5f, scrW * 8, scrH * 1), "Inventory");
-            //for loop list
-            //TODO: Need to change the end inv.Count * scrH
+            // For loop list
+            // TODO: Need to change the end inv.Count * scrH
             invScrollPosition = GUI.BeginScrollView(new Rect(scrW * 0.5f, scrH * 1.5f, scrW * 8, scrH * 7), invScrollPosition, new Rect(scrW * 0.5f, scrH * 0.5f, scrW * 7, inv.Count * scrH + 50));
             for (int i = 0; i < inv.Count; i++)
             {
-                //old code
+                // Old code
                 //if (GUI.Button(new Rect(scrW, scrH + i * (scrH*0.5f), 3 * scrW, 0.5f * scrH), inv[i].Name))
                 //{
                 //    selectedItem = inv[i];
                 //}
 
-                //buttons for each inventory item
+                // Buttons for each inventory item
                 Rect r = new Rect(scrW, scrH + i * (scrH), scrW, scrH);
                 Rect b = new Rect(scrW, scrH + i * (scrH), scrW * 6, scrH);
                 GUI.Box(b, inv[i].Name);
@@ -104,7 +98,7 @@ public class Inventory : MonoBehaviour
                     inv.Remove(inv[i]);
                 }
 
-                //alternateive code
+                // Alternateive code
                 //Rect position = new Rect(scrW, scrH + i * (scrH * 0.5f), 3 * scrW, 0.5f * scrH);
                 //GUI.DrawTexture(position, inv[i].Icon);
                 //if (GUI.Button(position, "", new GUIStyle()))

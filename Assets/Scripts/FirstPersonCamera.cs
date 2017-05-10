@@ -21,7 +21,7 @@ public class FirstPersonCamera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!gm.inMenu)
+        if (!gm.inMenu && !gm.inPauseMenu)
         {
             Rotation();
         }
