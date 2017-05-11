@@ -45,6 +45,24 @@ public class PauseMenu : MonoBehaviour
 
     void ShowPauseMenu()
     {
-        GUI.Box(new Rect(scrW * 4, 0, scrW * 4, scrH), "Paused");
+        GUI.BeginGroup(new Rect(scrW * 6, scrH, scrW * 4, scrH * 10));
+        GUI.Box(new Rect(0, 0, scrW * 4, scrH), "Paused");
+
+        if (GUI.Button(new Rect(scrW, scrH * 2, scrW * 2, scrH), "Resume"))
+        {
+            gm.inPauseMenu = false;
+            showPauseMenu = false;
+        }
+
+        if (GUI.Button(new Rect(scrW, scrH * 3.5f, scrW * 2, scrH), ""))
+        {
+
+        }
+
+        if (GUI.Button(new Rect(scrW, scrH * 5, scrW * 2, scrH), ""))
+        {
+
+        }
+        GUI.EndGroup();
     }
 }

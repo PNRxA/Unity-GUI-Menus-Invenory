@@ -27,7 +27,7 @@ public class Player : MonoBehaviour
 
     void Attack()
     {
-        if (Input.GetMouseButtonDown(0) && gm.inMenu == false)
+        if (Input.GetMouseButtonDown(0) && gm.inMenu == false && gm.inPauseMenu == false)
         {
             swing.SetTrigger("Attack");
         }
