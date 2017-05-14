@@ -6,23 +6,53 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
 
+    public GUISkin mainMenuSkin;
     private float scrW;
     private float scrH;
     private bool inOptions = false;
     private bool showResOptions = false;
     private bool fullscreenToggle;
     public Vector2 resScrollPosition = Vector2.zero;
+    public AudioSource audi;
+    public bool mute;
+    public float audioSlider, volMute;
 
     // Use this for initialization
     void Start()
     {
         fullscreenToggle = Screen.fullScreen;
+
+        if (PlayerPrefs.HasKey("mute"))
+        {
+            RenderSettings.ambientIntensity = PlayerPrefs.GetFloat("amLight");
+            audi.volume = PlayerPrefs.GetFloat("volume");
+
+            if (PlayerPrefs.GetInt("mute") == 0)
+            {
+                mute = false;
+                audi.volume = PlayerPrefs.GetFloat("volume");
+            }
+            else
+            {
+                mute = true;
+                audi.volume = 0;
+                volMute = PlayerPrefs.GetFloat("volume");
+            }
+        }
+        else
+        {
+        }
+
+        audioSlider = audi.volume;
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        if (audioSlider != audi.volume)
+        {
+            audi.volume = audioSlider;
+        }
     }
 
     void OnGUI()
@@ -48,7 +78,8 @@ public class MainMenu : MonoBehaviour
 
     void MainMenuFunc()
     {
-        GUI.Box(new Rect(scrW, scrH, scrW * 6, scrH * 2), "GAME NAME");
+        GUI.skin = mainMenuSkin;
+        GUI.Box(new Rect(scrW, scrH, scrW * 6, scrH * 2), "");
         if (GUI.Button(new Rect(scrW, scrH * 3.5f, scrW * 2, scrH), "Start"))
         {
             SceneManager.LoadScene(1);
@@ -61,6 +92,7 @@ public class MainMenu : MonoBehaviour
         {
             Application.Quit();
         }
+        GUI.skin = null;
     }
 
     void OptionsMenuFunc()
@@ -90,6 +122,26 @@ public class MainMenu : MonoBehaviour
 
         GUI.EndGroup();
 
+        GUI.Box(new Rect(scrW * 6, scrH * 2, scrW * 4, scrH * 4), "Sound");
+
+        GUI.BeginGroup(new Rect(scrW * 6.5f, scrH * 2.5f, scrW * 4, scrH * 4));
+
+        if (!mute)
+        {
+            audioSlider = GUI.HorizontalSlider(new Rect(0, scrH, 3 * scrW, .5f * scrH), audioSlider, 0f, 1f);
+        }
+        else
+        {
+            GUI.HorizontalSlider(new Rect(0, scrH, 3 * scrW, .5f * scrH), audioSlider, 0f, 1f);
+        }
+
+        if (GUI.Button(new Rect(0, scrH * 2, scrW * 2, scrH), "Mute/Unmute"))
+        {
+            ToggleMute();
+        }
+
+        GUI.EndGroup();
+
         GUI.Box(new Rect(scrW * 10, scrH * 2, scrW * 4, scrH * 4), "Screen");
 
         GUI.BeginGroup(new Rect(scrW * 10.5f, scrH * 2.5f, scrW * 3, scrH * 5f));
@@ -111,7 +163,25 @@ public class MainMenu : MonoBehaviour
 
         if (GUI.Button(new Rect(scrW * 7f, scrH * 8, scrW * 2, scrH), "Back"))
         {
+            SaveOptions();
             inOptions = false;
+        }
+    }
+
+    bool ToggleMute()
+    {
+        if (mute)
+        {
+            audioSlider = volMute;
+            mute = false;
+            return false;
+        }
+        else
+        {
+            volMute = audioSlider;
+            audioSlider = 0;
+            mute = true;
+            return true;
         }
     }
 
@@ -154,4 +224,20 @@ public class MainMenu : MonoBehaviour
 
         GUI.EndGroup();
     }
+
+    void SaveOptions()
+    {
+
+        if (!mute)
+        {
+            PlayerPrefs.SetInt("mute", 0);
+            PlayerPrefs.SetFloat("volume", audioSlider);
+        }
+        else
+        {
+            PlayerPrefs.SetInt("mute", 1);
+            PlayerPrefs.SetFloat("volume", volMute);
+        }
+    }
+
 }
