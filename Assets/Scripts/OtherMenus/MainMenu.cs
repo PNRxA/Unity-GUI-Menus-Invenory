@@ -5,8 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-
+    private bool showPauseMenu;
+    public Inventory inv;
+    public GameManager gm;
     public GUISkin mainMenuSkin;
+    public GUISkin optionsMenuSkin;
     private float scrW;
     private float scrH;
     private bool inOptions = false;
@@ -16,6 +19,7 @@ public class MainMenu : MonoBehaviour
     public AudioSource audi;
     public bool mute;
     public float audioSlider, volMute;
+    private string buttonName = "Choose Resoltion v";
 
     // Use this for initialization
     void Start()
@@ -24,7 +28,6 @@ public class MainMenu : MonoBehaviour
 
         if (PlayerPrefs.HasKey("mute"))
         {
-            RenderSettings.ambientIntensity = PlayerPrefs.GetFloat("amLight");
             audi.volume = PlayerPrefs.GetFloat("volume");
 
             if (PlayerPrefs.GetInt("mute") == 0)
@@ -49,6 +52,25 @@ public class MainMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (gm)
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                showPauseMenu = !showPauseMenu;
+                gm.inPauseMenu = !gm.inPauseMenu;
+                showResOptions = false;
+                inOptions = false;
+                if (inv.showInv)
+                {
+                    inv.ToggleInv();
+                }
+            }
+
+            if (audioSlider != audi.volume)
+            {
+                audi.volume = audioSlider;
+            }
+        }
         if (audioSlider != audi.volume)
         {
             audi.volume = audioSlider;
@@ -62,7 +84,21 @@ public class MainMenu : MonoBehaviour
         scrH = Screen.height / 10;
 
         // Determine what menu to display
-        if (!inOptions)
+        if (gm)
+        {
+            if (!inOptions && showPauseMenu)
+            {
+                ShowPauseMenu();
+            }
+            else if (inOptions)
+            {
+                OptionsMenuFunc();
+                if (showResOptions)
+                {
+                    ResOptionsFunc();
+                }
+            }
+        } else if (!inOptions)
         {
             MainMenuFunc();
         }
@@ -95,8 +131,34 @@ public class MainMenu : MonoBehaviour
         GUI.skin = null;
     }
 
+    void ShowPauseMenu()
+    {
+        GUI.skin = optionsMenuSkin;
+        GUI.BeginGroup(new Rect(scrW * 6, scrH, scrW * 4, scrH * 10));
+        GUI.Box(new Rect(0, 0, scrW * 4, scrH), "Paused");
+
+        if (GUI.Button(new Rect(scrW, scrH * 2, scrW * 2, scrH), "Resume"))
+        {
+            gm.inPauseMenu = false;
+            showPauseMenu = false;
+        }
+
+        if (GUI.Button(new Rect(scrW, scrH * 3.5f, scrW * 2, scrH), "Options"))
+        {
+            inOptions = true;
+        }
+
+        if (GUI.Button(new Rect(scrW, scrH * 5, scrW * 2, scrH), "Quit"))
+        {
+            SceneManager.LoadScene(0);
+        }
+        GUI.EndGroup();
+        GUI.skin = null;
+    }
+
     void OptionsMenuFunc()
     {
+        GUI.skin = optionsMenuSkin;
         GUI.Box(new Rect(scrW, scrH, scrW * 14, scrH * 6), "Options");
 
         GUI.Box(new Rect(scrW * 2, scrH * 2, scrW * 4, scrH * 4), "Inputs");
@@ -146,7 +208,7 @@ public class MainMenu : MonoBehaviour
 
         GUI.BeginGroup(new Rect(scrW * 10.5f, scrH * 2.5f, scrW * 3, scrH * 5f));
 
-        if (GUI.Button(new Rect(0, 0, scrW * 3, scrH * .5f), "Choose Resoltion v"))
+        if (GUI.Button(new Rect(0, 0, scrW * 3, scrH * .5f), buttonName))
         {
             showResOptions = !showResOptions;
         }
@@ -166,6 +228,7 @@ public class MainMenu : MonoBehaviour
             SaveOptions();
             inOptions = false;
         }
+        GUI.skin = null;
     }
 
     bool ToggleMute()
@@ -217,6 +280,8 @@ public class MainMenu : MonoBehaviour
             if (GUI.Button(new Rect(0, scrH * i, scrW * 2.7f, scrH), res[i]))
             {
                 Screen.SetResolution(resW[i], resH[i], Screen.fullScreen);
+                buttonName = res[i];
+                showResOptions = false;
             }
         }
 

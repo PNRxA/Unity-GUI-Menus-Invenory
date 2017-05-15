@@ -86,7 +86,7 @@ public class Inventory : MonoBehaviour
                 Rect b = new Rect(scrW, scrH + i * (scrH), scrW * 6, scrH);
                 GUI.Box(b, inv[i].Name);
                 GUI.DrawTexture(r, inv[i].Icon);
-                if (Input.GetMouseButton(0))
+                if (Input.GetMouseButtonDown(0))
                 {
                     if (b.Contains(Event.current.mousePosition))
                     {

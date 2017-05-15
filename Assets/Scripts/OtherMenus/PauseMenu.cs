@@ -1,12 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
     public GameManager gm;
     public Inventory inv;
-
     private float scrW;
     private float scrH;
     private bool showPauseMenu;
@@ -21,9 +21,10 @@ public class PauseMenu : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        fullscreenToggle = Screen.fullScreen;
+
         if (PlayerPrefs.HasKey("mute"))
         {
-            RenderSettings.ambientIntensity = PlayerPrefs.GetFloat("amLight");
             audi.volume = PlayerPrefs.GetFloat("volume");
 
             if (PlayerPrefs.GetInt("mute") == 0)
@@ -102,7 +103,7 @@ public class PauseMenu : MonoBehaviour
 
         if (GUI.Button(new Rect(scrW, scrH * 5, scrW * 2, scrH), "Quit"))
         {
-            Application.Quit();
+            SceneManager.LoadScene(0);
         }
         GUI.EndGroup();
     }
