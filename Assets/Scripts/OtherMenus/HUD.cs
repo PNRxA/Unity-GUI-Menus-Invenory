@@ -14,6 +14,7 @@ public class HUD : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        // Grab the player so can write/read stats
         playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
 
@@ -28,8 +29,10 @@ public class HUD : MonoBehaviour
 
     void OnGUI()
     {
+        // Define the ratio
         scrW = Screen.width / 16;
         scrH = Screen.height / 10;
+        // If not in a menu, display the GUi
         if (!gm.inMenu && !gm.inPauseMenu)
         {
             UpDisplay();
@@ -38,11 +41,20 @@ public class HUD : MonoBehaviour
 
     void UpDisplay()
     {
-        // Health
-        GUI.Box(new Rect(6 * scrW, 0.25f * scrH, playerStats.curHealth * (4f * scrW) / playerStats.maxHealth, .5f * scrH), "HP: " + playerStats.curHealth);
-        // Stamina
-        GUI.Box(new Rect(6 * scrW, scrH, playerStats.curStamina * (4f * scrW) / playerStats.maxStamina, .5f * scrH), "SP: " + playerStats.curStamina);
-        // Mana
-        GUI.Box(new Rect(6 * scrW, 1.75f * scrH, playerStats.curMana * (4f * scrW) / playerStats.maxMana, .5f * scrH), "MP: " + playerStats.curMana);
+        float i = .25f;
+        // Health Bar
+        GenerateBar(playerStats.curHealth, playerStats.maxHealth, "HP", i);
+        i++;
+        // Stamina Bar
+        GenerateBar(playerStats.curStamina, playerStats.maxStamina, "SP", i);
+        i++;
+        // Mana Bar
+        GenerateBar(playerStats.curMana, playerStats.maxMana, "MP", i);
+    }
+
+    void GenerateBar(float curValue, float maxValue, string barType, float pos)
+    {
+        // Generate a status bar based on inputs
+        GUI.Box(new Rect(6 * scrW, pos * scrH, curValue * (4f * scrW) / maxValue, .5f * scrH), barType + ": " + curValue);
     }
 }

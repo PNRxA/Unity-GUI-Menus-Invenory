@@ -20,7 +20,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         controller = GetComponent<CharacterController>();
-
+        // Set the player scale based on the customisation height
         gameObject.transform.localScale = new Vector3(playerWidth, playerHeight, playerWidth);
     }
 
@@ -32,6 +32,7 @@ public class Player : MonoBehaviour
 
     void LateUpdate()
     {
+        // Ensure all values are correct at all times
         if (curHealth > maxHealth)
         {
             curHealth = maxHealth;
@@ -62,6 +63,7 @@ public class Player : MonoBehaviour
 
     void Attack()
     {
+        // Swing sword
         if (Input.GetMouseButtonDown(0) && gm.inMenu == false && gm.inPauseMenu == false)
         {
             swing.SetTrigger("Attack");
@@ -70,6 +72,7 @@ public class Player : MonoBehaviour
 
     void Movement()
     {
+        // Move character based on axis movement
         if (controller.isGrounded && controllable)
         {
             moveDirection = new Vector3(-Input.GetAxis("Horizontal"), 0, -Input.GetAxis("Vertical"));

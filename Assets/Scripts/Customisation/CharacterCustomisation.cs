@@ -76,7 +76,7 @@ public class CharacterCustomisation : MonoBehaviour
             RotatingScript.ySpeed = 0;
             GameObject.FindGameObjectWithTag("Player").gameObject.transform.rotation = Quaternion.Euler(0, 221, 0);
         }
-
+        // Set the player model to the new height and width values
         RotatingScript.gameObject.transform.localScale = new Vector3(playerWidth, playerHeight, playerWidth);
     }
 
@@ -163,8 +163,10 @@ public class CharacterCustomisation : MonoBehaviour
 
     void OnGUI()
     {
+        // Define the ratio
         scrW = Screen.width / 16;
         scrH = Screen.height / 9;
+        // Set the Gui menu skin
         GUI.skin = mainMenuSkin;
         Customisation();
         StatsView();
@@ -211,6 +213,7 @@ public class CharacterCustomisation : MonoBehaviour
             SceneManager.LoadScene(1);
         }
         i++;
+        // For playerHeight and player Width, set the bar to the value and let the value change the bar to a max of 2f
         GUI.Box(new Rect(0.25f * scrW, scrH + i * (0.5f * scrH), 2 * scrW, scrH), "Height: " + Mathf.RoundToInt(playerHeight));
         i++;
         playerHeight = GUI.HorizontalSlider(new Rect(0.25f * scrW, scrH + i * (0.5f * scrH), 2 * scrW, 0.5f * scrH), playerHeight, 1.0F, 2.0F);
@@ -309,6 +312,7 @@ public class CharacterCustomisation : MonoBehaviour
 
     void SetClass(int dir)
     {
+        // Scroll through classes based on dir
         classIndex += dir;
         if (classIndex < 0)
         {

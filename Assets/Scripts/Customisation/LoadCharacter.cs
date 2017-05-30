@@ -16,11 +16,13 @@ public class LoadCharacter : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        // Get components on start
         player = GameObject.FindGameObjectWithTag("Player");
         playerStats = player.GetComponent<Player>();
         character = player.GetComponentInChildren<SkinnedMeshRenderer>();
         LoadFunc();
 
+        // Set player stats based on other player stats
         playerStats.maxHealth = 50 * playerStats.strength;
         playerStats.curHealth = playerStats.maxHealth;
         playerStats.maxStamina = 50 * playerStats.agility;
@@ -37,6 +39,7 @@ public class LoadCharacter : MonoBehaviour
 
     void LoadFunc()
     {
+        // If playerprefs do not exist don't load them in otherwise load them in 
         if (!PlayerPrefs.HasKey("PlayerName"))
         {
             SceneManager.LoadScene(1);
@@ -61,6 +64,7 @@ public class LoadCharacter : MonoBehaviour
 
     void SetTexture(string type, int index)
     {
+        // Set texture based on inputs
         Texture2D texture = null;
         int matIndex = 0;
 
