@@ -29,6 +29,11 @@ public class Enemy : MonoBehaviour
             hurt.SetTrigger("Hurt");
             DropItem("300");
         }
+
+        if (col.collider.tag == "Player")
+        {
+            col.gameObject.GetComponent<Player>().curHealth--;
+        }
     }
 
     void DropItem(string id)

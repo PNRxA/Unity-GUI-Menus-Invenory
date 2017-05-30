@@ -136,8 +136,9 @@ public class MainMenu : MonoBehaviour
                     ResOptionsFunc();
                 }
             }
-        // If not in game and not inOptions show the main menu
-        } else if (!inOptions)
+            // If not in game and not inOptions show the main menu
+        }
+        else if (!inOptions)
         {
             MainMenuFunc();
         }
@@ -159,7 +160,7 @@ public class MainMenu : MonoBehaviour
         if (GUI.Button(new Rect(scrW, scrH * 3.5f, scrW * 2, scrH), "Start"))
         {
             // Start game by loading first scene
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene(2);
         }
         if (GUI.Button(new Rect(scrW, scrH * 5f, scrW * 2, scrH), "Options"))
         {
@@ -185,8 +186,8 @@ public class MainMenu : MonoBehaviour
             // Hide pause menu
             gm.inPauseMenu = false;
             showPauseMenu = false;
-            // Uncomment to debug if first load works by clearing player prefs
-            //PlayerPrefs.DeleteAll();
+            // DEBUG: Uncomment to debug if first load works by clearing player prefs when clicking the resume button
+            PlayerPrefs.DeleteAll();
         }
 
         if (GUI.Button(new Rect(scrW, scrH * 3.5f, scrW * 2, scrH), "Options"))
@@ -492,7 +493,7 @@ public class MainMenu : MonoBehaviour
     {
         // Set up resolutions for button labels
         string[] res = new string[] { "1024×576", "1152×648", "1280×720", "1280×800", "1366×768", "1440×900", "1600×900", "1680×1050", "1920×1080", "1920×1200", "2560×1440", "2560×1600", "3840×2160" };
-        
+
         // Set up resolution values to set (TODO could be improved)
         int[] resW = new int[] { 1024, 1152, 1280, 1280, 1366, 1440, 1600, 1680, 1920, 1920, 2560, 2560, 3840 };
         int[] resH = new int[] { 576, 648, 720, 800, 768, 900, 900, 1050, 1080, 1200, 1440, 1600, 2160 };

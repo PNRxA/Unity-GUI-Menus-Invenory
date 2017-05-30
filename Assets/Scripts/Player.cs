@@ -10,6 +10,9 @@ public class Player : MonoBehaviour
     public float jumpSpeed = 6.0f;
     public float gravity = 20.0f;
     public GameManager gm;
+    public int agility, intelligence, strength;
+    public float curHealth, maxHealth, curStamina, maxStamina, curMana, maxMana;
+    public float playerHeight, playerWidth;
 
     private Vector3 moveDirection = Vector3.zero;
     private CharacterController controller;
@@ -17,12 +20,44 @@ public class Player : MonoBehaviour
     void Start()
     {
         controller = GetComponent<CharacterController>();
+
+        gameObject.transform.localScale = new Vector3(playerWidth, playerHeight, playerWidth);
     }
 
     void Update()
     {
         Attack();
         Movement();
+    }
+
+    void LateUpdate()
+    {
+        if (curHealth > maxHealth)
+        {
+            curHealth = maxHealth;
+        }
+        if (curHealth < 0)
+        {
+            curHealth = 0;
+        }
+
+        if (curStamina > maxStamina)
+        {
+            curStamina = maxStamina;
+        }
+        if (curStamina < 0)
+        {
+            curStamina = 0;
+        }
+
+        if (curMana > maxMana)
+        {
+            curMana = maxMana;
+        }
+        if (curMana < 0)
+        {
+            curMana = 0;
+        }
     }
 
     void Attack()
