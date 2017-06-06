@@ -23,7 +23,7 @@ public class HUD : MonoBehaviour
     {
         // Make more red when lower health
         playerIcon = new Color(255, Mathf.RoundToInt(playerStats.curHealth / 255 * (playerStats.curHealth * 6)), Mathf.RoundToInt(playerStats.curHealth / 255 * (playerStats.curHealth * 6)), 100);
-        // Doesn't work as intended but changes icon red when dead
+        // Doesn't work as intended but changes icon red when dead COLOURS ONLY ACCEPT 0-1f
         rImage.color = playerIcon;
     }
 

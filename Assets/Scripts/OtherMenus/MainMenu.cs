@@ -187,7 +187,7 @@ public class MainMenu : MonoBehaviour
             gm.inPauseMenu = false;
             showPauseMenu = false;
             // DEBUG: Uncomment to debug if first load works by clearing player prefs when clicking the resume button
-            PlayerPrefs.DeleteAll();
+            //PlayerPrefs.DeleteAll();
         }
 
         if (GUI.Button(new Rect(scrW, scrH * 3.5f, scrW * 2, scrH), "Options"))
