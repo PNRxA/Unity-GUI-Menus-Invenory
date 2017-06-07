@@ -64,7 +64,7 @@ public class Player : MonoBehaviour
     void Attack()
     {
         // Swing sword
-        if (Input.GetMouseButtonDown(0) && gm.inMenu == false && gm.inPauseMenu == false)
+        if (Input.GetMouseButtonDown(0) && !gm.inMenu && !gm.inPauseMenu && !gm.inTradeMenu)
         {
             swing.SetTrigger("Attack");
         }

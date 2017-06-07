@@ -46,7 +46,7 @@ public class Inventory : MonoBehaviour
         {
             selectedItem = null;
         }
-        if (Input.GetKeyDown(KeyCode.Tab) && !gm.inPauseMenu)
+        if (Input.GetKeyDown(KeyCode.Tab) && !gm.inPauseMenu && !gm.inTradeMenu)
         {
             inventoryWindowRect = new Rect(scrW * 0.5f, scrH * 0.5f, scrW * 8, scrH * 8);
             ToggleInv();

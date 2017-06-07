@@ -7,17 +7,16 @@ public class GameManager : MonoBehaviour
 
     public bool inMenu = false;
     public bool inPauseMenu = false;
+    public bool inTradeMenu = false;
 
     // Use this for initialization
     void Start()
     {
-
     }
-
     // Update is called once per frame
     void Update()
     {
-        if (inMenu || inPauseMenu)
+        if (inMenu || inPauseMenu || inTradeMenu)
         {
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;

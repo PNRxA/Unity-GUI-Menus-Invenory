@@ -33,7 +33,7 @@ public class HUD : MonoBehaviour
         scrW = Screen.width / 16;
         scrH = Screen.height / 10;
         // If not in a menu, display the GUi
-        if (!gm.inMenu && !gm.inPauseMenu)
+        if (!gm.inMenu && !gm.inPauseMenu && !gm.inTradeMenu)
         {
             UpDisplay();
         }

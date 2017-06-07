@@ -7,6 +7,7 @@ public class MainMenu : MonoBehaviour
 {
     private bool showPauseMenu;
     public Inventory inv;
+    public Chest chest;
     public GameManager gm;
     public GUISkin mainMenuSkin;
     public GUISkin optionsMenuSkin;
@@ -97,6 +98,10 @@ public class MainMenu : MonoBehaviour
                 if (inv.showInv)
                 {
                     inv.ToggleInv();
+                }
+                if (chest.showTransfer)
+                {
+                    chest.ToggleTransfer();
                 }
             }
             // Audio slider = volume
