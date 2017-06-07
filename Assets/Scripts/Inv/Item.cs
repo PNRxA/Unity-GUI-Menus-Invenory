@@ -12,8 +12,6 @@ public class Item
     private int _value;
     private int _heal;
     private int _damage;
-    //private float _weight;
-    //private int _durability;
 
     public void Init()
     {

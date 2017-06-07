@@ -14,7 +14,9 @@ public class Chest : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        // Set inventory
         inventory = FindObjectOfType<Inventory>();
+        // Add initial item to the chest
         chest.Add(ItemDatabase.createItem(000));
     }
 
@@ -26,6 +28,7 @@ public class Chest : MonoBehaviour
 
     public bool ToggleTransfer()
     {
+        // Toggle transfer menu
         if (!showTransfer)
         {
             gm.inTradeMenu = true;
@@ -66,6 +69,7 @@ public class Chest : MonoBehaviour
     {
         scrH = Screen.height / 10;
         scrW = Screen.width / 16;
+        // If showTransfer then show the transfer menu
         if (showTransfer)
         {
             TransferMenu();
@@ -89,6 +93,7 @@ public class Chest : MonoBehaviour
             Rect b = new Rect(scrW, scrH + i * (scrH), scrW * 6, scrH);
             GUI.Box(b, inventory.inv[i].Name);
             GUI.DrawTexture(r, inventory.inv[i].Icon);
+            // Move items from inventory to chest
             if (GUI.Button(new Rect(scrW * 7, scrH + i * (scrH), scrW, scrH), "Transfer"))
             {
                 chest.Add(inventory.inv[i]);
@@ -105,11 +110,12 @@ public class Chest : MonoBehaviour
 
         for (int i = 0; i < chest.Count; i++)
         {
-            // Buttons for each inventory item
+            // Buttons for each chest item
             Rect r = new Rect(scrW, scrH + i * (scrH), scrW, scrH);
             Rect b = new Rect(scrW, scrH + i * (scrH), scrW * 4, scrH);
             GUI.Box(b, chest[i].Name);
             GUI.DrawTexture(r, chest[i].Icon);
+            // Move items from chest to inventory
             if (GUI.Button(new Rect(scrW * 4, scrH + i * (scrH), scrW, scrH), "Transfer"))
             {
                 inventory.inv.Add(chest[i]);

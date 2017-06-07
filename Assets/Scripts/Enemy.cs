@@ -10,37 +10,31 @@ public class Enemy : MonoBehaviour
     public Inventory inventory;
     public GameObject itemToDrop;
 
-    // Use this for initialization
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
+    // On collision enter with player/weapon
     void OnCollisionEnter(Collision col)
     {
+        // If weapon then take damage and drop an item
         if (col.collider.tag == "Weapon")
         {
             hurt.SetTrigger("Hurt");
             DropItem("300");
         }
-
+        // If player then deal damage to the player
         if (col.collider.tag == "Player")
         {
             col.gameObject.GetComponent<Player>().curHealth--;
         }
     }
 
+    // Function to drop item based on ID 
     void DropItem(string id)
     {
+        // Set spawnposition
         Vector3 spawnPos = transform.position;
         spawnPos.y += 1;
+        // Instantiate itemdrop
         GameObject itemDrop = Instantiate(itemToDrop, spawnPos, Quaternion.identity);
+        // Render based on id
         itemDrop.name = id;
         Renderer rend = itemDrop.GetComponentInChildren<Renderer>();
         Material mat = rend.material;

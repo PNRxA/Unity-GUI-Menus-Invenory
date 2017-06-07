@@ -9,13 +9,10 @@ public class GameManager : MonoBehaviour
     public bool inPauseMenu = false;
     public bool inTradeMenu = false;
 
-    // Use this for initialization
-    void Start()
-    {
-    }
     // Update is called once per frame
     void Update()
     {
+        // If in any menu then show the cursor and freezetime otherwise lock/hid/resume time
         if (inMenu || inPauseMenu || inTradeMenu)
         {
             Cursor.visible = true;

@@ -19,6 +19,7 @@ public class Inventory : MonoBehaviour
 
     void Start()
     {
+        // Add initial items to inventory
         inv.Add(ItemDatabase.createItem(000));
         inv.Add(ItemDatabase.createItem(300));
         inv.Add(ItemDatabase.createItem(400));
@@ -26,6 +27,7 @@ public class Inventory : MonoBehaviour
 
     public bool ToggleInv()
     {
+        // Toggle the inventory
         if (!showInv)
         {
             gm.inMenu = true;
@@ -42,10 +44,12 @@ public class Inventory : MonoBehaviour
 
     void Update()
     {
+        // If not selecting item set selected item to nothing
         if (!selectingItem)
         {
             selectedItem = null;
         }
+        // Show manu if you press tab
         if (Input.GetKeyDown(KeyCode.Tab) && !gm.inPauseMenu && !gm.inTradeMenu)
         {
             inventoryWindowRect = new Rect(scrW * 0.5f, scrH * 0.5f, scrW * 8, scrH * 8);
@@ -55,6 +59,7 @@ public class Inventory : MonoBehaviour
 
     void ItemData(string name)
     {
+        // Display itemData at mouse position as a tool tip
         GUI.BeginGroup(new Rect(Input.mousePosition.x, Screen.height - Input.mousePosition.y, scrW * 7f, scrH * 4));
         GUI.Box(new Rect(0, 0, scrW * 5, scrH * 4f), selectedItem.Name + "\n" + selectedItem.Description + "\nValue: " + selectedItem.Value + "\nHeal: " + selectedItem.Heal);
         GUI.DrawTexture(new Rect(scrW * 1.5f, scrH * 2, scrW * 2f, scrH * 2f), selectedItem.Icon);
@@ -69,14 +74,10 @@ public class Inventory : MonoBehaviour
     {
         scrW = Screen.width / 16;
         scrH = Screen.height / 10;
-
+        // Show inventory if showInv
         if (showInv)
         {
             inventoryWindowRect = ClampToScreen(GUI.Window(0, inventoryWindowRect, InventoryWindow, "Inventory"));
-            // if (!inventoryWindowRect.Contains(Event.current.mousePosition))
-            // {
-            //     selectedItem = null;
-            // }
             Background();
         }
     }
@@ -89,28 +90,20 @@ public class Inventory : MonoBehaviour
 
     void InventoryWindow(int windowID)
     {
+        // Wrap text to box
         GUI.skin.box.wordWrap = true;
+        // Show item tool tips
         ItemTooltips();
-        // Background
-        //GUI.Box(new Rect(scrW * 0.5f, scrH * 0.5f, scrW * 8, scrH * 8), "");
-        // Emphasised header
-        //GUI.Box(new Rect(scrW * 0.5f, scrH * 0.5f, scrW * 8, scrH * 1), "Inventory");
         // For loop list
-        // TODO: Need to change the end inv.Count * scrH
         invScrollPosition = GUI.BeginScrollView(new Rect(0, 0, scrW * 8, scrH * 8), invScrollPosition, new Rect(scrW * 0.5f, scrH * 0.5f, scrW * 7.5f, inv.Count * scrH + 50));
         for (int i = 0; i < inv.Count; i++)
         {
-            // Old code
-            //if (GUI.Button(new Rect(scrW, scrH + i * (scrH*0.5f), 3 * scrW, 0.5f * scrH), inv[i].Name))
-            //{
-            //    selectedItem = inv[i];
-            //}
-
             // Buttons for each inventory item
             Rect r = new Rect(scrW, scrH + i * (scrH), scrW, scrH);
             Rect b = new Rect(scrW, scrH + i * (scrH), scrW * 6, scrH);
             GUI.Box(b, inv[i].Name);
             GUI.DrawTexture(r, inv[i].Icon);
+            // If the box contains the cursor then show tooltip
             if (b.Contains(Event.current.mousePosition))
             {
                 selectingItem = true;
@@ -120,23 +113,17 @@ public class Inventory : MonoBehaviour
             {
                 selectingItem = false;
             }
+            // Remove item after clicking drop
             if (GUI.Button(new Rect(scrW * 7, scrH + i * (scrH), scrW, scrH), "Drop"))
             {
                 inv.Remove(inv[i]);
             }
-
-            // Alternateive code
-            //Rect position = new Rect(scrW, scrH + i * (scrH * 0.5f), 3 * scrW, 0.5f * scrH);
-            //GUI.DrawTexture(position, inv[i].Icon);
-            //if (GUI.Button(position, "", new GUIStyle()))
-            //{
-            //    selectedItem = inv[i];
-            //}
         }
         GUI.EndScrollView();
         GUI.DragWindow();
     }
 
+    // Generate item tool tips
     void ItemTooltips()
     {
         if (selectedItem != null)
@@ -172,6 +159,7 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    // Clamp window to the screen
     Rect ClampToScreen(Rect r)
     {
         r.x = Mathf.Clamp(r.x, 0, Screen.width - r.width);

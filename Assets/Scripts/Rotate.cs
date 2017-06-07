@@ -2,17 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Rotate : MonoBehaviour {
+public class Rotate : MonoBehaviour
+{
 
     public float xSpeed, ySpeed, zSpeed;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    // Update is called once per frame
+    void Update()
+    {
+        // Rotate based on speed set in editor
         transform.Rotate(xSpeed, ySpeed, zSpeed);
-	}
+    }
 }

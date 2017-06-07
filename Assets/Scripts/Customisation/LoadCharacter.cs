@@ -31,12 +31,6 @@ public class LoadCharacter : MonoBehaviour
         playerStats.curMana = playerStats.maxMana;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     void LoadFunc()
     {
         // If playerprefs do not exist don't load them in otherwise load them in 

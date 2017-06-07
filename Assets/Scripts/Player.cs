@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+        // Set character controller 
         controller = GetComponent<CharacterController>();
         // Set the player scale based on the customisation height
         gameObject.transform.localScale = new Vector3(playerWidth, playerHeight, playerWidth);
@@ -26,6 +27,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        // Attack/movement functions
         Attack();
         Movement();
     }
@@ -63,7 +65,7 @@ public class Player : MonoBehaviour
 
     void Attack()
     {
-        // Swing sword
+        // Swing sword if not in a menu
         if (Input.GetMouseButtonDown(0) && !gm.inMenu && !gm.inPauseMenu && !gm.inTradeMenu)
         {
             swing.SetTrigger("Attack");
@@ -80,7 +82,9 @@ public class Player : MonoBehaviour
             moveDirection *= speed;
 
             if (Input.GetButton("Jump"))
+            {
                 moveDirection.y = jumpSpeed;
+            }
 
         }
         moveDirection.y -= gravity * Time.deltaTime;
